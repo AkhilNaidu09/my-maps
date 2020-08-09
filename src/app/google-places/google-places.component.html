@@ -1,6 +1,6 @@
 <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" id="scroller" mode="side" opened="true">
-        <form class="example-form" >
+        <form class="example-form">
 
             <div class="section-hero-header-image">
                 <div *ngIf="selectedLocationUrls?.length"
@@ -13,7 +13,7 @@
                         <mat-label>Search Location</mat-label>
                         <input matInput placeholder="Search" aria-label="Search" #addressInputAutocomplete
                             [matAutocomplete]="auto" [(ngModel)]="addressSearch" [ngModelOptions]="{standalone: true}"
-                            (ngModelChange)="searchData()">
+                            (ngModelChange)="getLocationPredictions()">
 
                     </mat-form-field>
 
