@@ -12,13 +12,14 @@ export class GooglePlacesComponent implements OnInit, AfterViewInit {
   public placeOptions: BehaviorSubject<google.maps.places.AutocompletePrediction[]>;
   private autocompleteService: google.maps.places.AutocompleteService;
   public addressSearch: string = '';
-  @ViewChild('addressInputAutocomplete') addressInput: ElementRef;
-
+  public nearByType: string = '';
   lat: any;
   lng: any;
 
   selectedPlace: any = null;
   selectedLocationUrls: any[] = [];
+  nearByResults: any;
+  selectedTab: number = 0;
 
   constructor(private zone: NgZone) {
     this.placeOptions = new BehaviorSubject([]);
@@ -42,6 +43,11 @@ export class GooglePlacesComponent implements OnInit, AfterViewInit {
     this.initialize(data.place_id);
   }
 
+  onSeletctNearBy(data) {
+    this.initialize(data.place_id);
+    this.selectedTab = 0;
+  }
+
   /**
    * Retrieves search predections (a custom autocomplete)
    *
@@ -55,6 +61,26 @@ export class GooglePlacesComponent implements OnInit, AfterViewInit {
     } else {
       this.placeOptions.next([]);
     }
+  }
+
+  nearBySearch() {
+    const request = {
+      location: new google.maps.LatLng(this.lat, this.lng),
+      radius: 5000,
+      type: this.nearByType ? this.nearByType : 'restaurant'
+    };
+
+    const places = document.getElementById("map_canvas") as HTMLDivElement;
+    const service = new google.maps.places.PlacesService(places);
+    var _this = this;
+    service.nearbySearch(request, function (place, status) {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        _this.zone.run(() => { _this.nearByResults = place; });
+      } else {
+        _this.zone.run(() => { _this.nearByResults = []; });
+      }
+    });
+
   }
 
   /**
@@ -83,7 +109,7 @@ export class GooglePlacesComponent implements OnInit, AfterViewInit {
         this.lat = +pos.coords.latitude;
       });
     }
-    
+
     // Initiating maps with a static placeId, we can do this dynamically as well by poping-up allow location in broswer side.
     this.initialize('ChIJdd_ytSbL4BQRWDUgd6Myndo');
 
@@ -176,6 +202,10 @@ export class GooglePlacesComponent implements OnInit, AfterViewInit {
    */
   counter(i: number) {
     return new Array(Math.round(i));
+  }
+
+  getCategories(): string[] {
+    return ["accounting", "airport", "amusement_park", "aquarium", "art_gallery", "atm", "bakery", "bank", "bar", "beauty_salon", "bicycle_store", "book_store", "bowling_alley", "bus_station", "cafe", "campground", "car_dealer", "car_rental", "car_repair", "car_wash", "casino", "cemetery", "church", "city_hall", "clothing_store", "convenience_store", "courthouse", "dentist", "department_store", "doctor", "drugstore", "electrician", "electronics_store", "embassy", "fire_station", "florist", "funeral_home", "furniture_store", "gas_station", "gym", "hair_care", "hardware_store", "hindu_temple", "home_goods_store", "hospital", "insurance_agency", "jewelry_store", "laundry", "lawyer", "library", "light_rail_station", "liquor_store", "local_government_office", "locksmith", "lodging", "meal_delivery", "meal_takeaway", "mosque", "movie_rental", "movie_theater", "moving_company", "museum", "night_club", "painter", "park", "parking", "pet_store", "pharmacy", "physiotherapist", "plumber", "police", "post_office", "primary_school", "real_estate_agency", "restaurant", "roofing_contractor", "rv_park", "school", "secondary_school", "shoe_store", "shopping_mall", "spa", "stadium", "storage", "store", "subway_station", "supermarket", "synagogue", "taxi_stand", "tourist_attraction", "train_station", "transit_station", "travel_agency", "university", "veterinary_care", "zoo"];
   }
 
 }

@@ -15,6 +15,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 import {MatListModule} from '@angular/material/list';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatButtonModule} from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import {MatGridListModule} from '@angular/material/grid-list';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +40,13 @@ import {MatListModule} from '@angular/material/list';
     MatProgressSpinnerModule,
     MatSidenavModule,
     MatCarouselModule.forRoot(),
-    MatListModule
+    MatListModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatTabsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatGridListModule
    
   ],
   providers: [],

@@ -1,117 +1,153 @@
 <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" id="scroller" mode="side" opened="true">
         <form class="example-form">
-
-            <div class="section-hero-header-image">
-                <div *ngIf="selectedLocationUrls?.length"
-                    class="section-hero-header-image-hero-container collapsible-hero-image">
-                    <img [src]="selectedLocationUrls" style="opacity:0.8;width: 408px;height: 272px;">
-                </div>
-                <div class="search-box">
-
-                    <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Search Location</mat-label>
-                        <input matInput placeholder="Search" aria-label="Search" #addressInputAutocomplete
-                            [matAutocomplete]="auto" [(ngModel)]="addressSearch" [ngModelOptions]="{standalone: true}"
-                            (ngModelChange)="getLocationPredictions()">
-
-                    </mat-form-field>
-
-
-
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
-                        (optionSelected)="placeSelected($event)">
-                        <ng-container>
-                            <mat-option *ngFor="let state of placeOptions | async" [value]="state"
-                                (mouseenter)="onHover(state)">
-                                <span class="material-icons">
-                                    location_on
-                                </span>
-                                <span style="padding-left: 10px;">{{state.description}}</span>
-                            </mat-option>
-                        </ng-container>
-                    </mat-autocomplete>
-
-                </div>
-
-                <div style="margin-top:30px;padding: 16px 10px 16px;">
-                    <div>
-                        <h1 style="margin: 0;"> <span>{{selectedPlace?.name}}</span> </h1>
-                        <h4 style="margin: 0;">
-                            <span>{{selectedPlace?.formatted_address}}</span>
-                        </h4>
-                        <div id="rating" *ngIf="selectedPlace?.rating && selectedPlace?.user_ratings_total">
-                            <span>Rating: ({{selectedPlace?.user_ratings_total}}) </span>
-                            <span *ngFor='let in of counter(selectedPlace?.rating) ;let i = index'
-                                class="material-icons" style="color: #ffb100;">
-                                star
-                            </span>
-
-                            <!-- <span class="material-icons">
-                                star_half
-                            </span>
-                            <span class="material-icons">
-                                star_outline
-                            </span> -->
+            <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab"
+                (selectedIndexChange)="selectedTab=$event;">
+                <mat-tab label="Search-by Location">
+                    <div class="section-hero-header-image">
+                        <div *ngIf="selectedLocationUrls?.length"
+                            class="section-hero-header-image-hero-container collapsible-hero-image">
+                            <img [src]="selectedLocationUrls" style="opacity:0.8;width: 408px;height: 272px;">
                         </div>
-                    </div>
-                </div>
-                <hr />
-                <div style="margin-top:30px;padding: 16px 10px 16px;">
-                    <div>
-                        <h2 style="margin: 0;"> <span>Photos</span> </h2>
-                    </div>
-                </div>
-                <div *ngIf="selectedLocationUrls?.length">
-                    <mat-carousel timings="250ms ease-in" [autoplay]="true" interval="5000" color="accent"
-                        [maintainAspectRatio]="true" [proportion]="60" maxWidth="auto" slides="5" [loop]="true"
-                        [hideArrows]="false" [hideIndicators]="false" [useKeyboard]="true" [useMouseWheel]="false"
-                        orientation="ltr">
-                        <mat-carousel-slide #matCarouselSlide *ngFor="let slide of selectedLocationUrls; let i = index"
-                            [image]="slide" overlayColor="#00000040" [hideOverlay]="false"></mat-carousel-slide>
-                    </mat-carousel>
-                </div>
-                <hr />
-                <div *ngIf="selectedPlace">
-                    <mat-selection-list #shoes [multiple]="false">
-                        <ng-container *ngIf="selectedPlace?.formatted_address">
+                        <div class="search-box">
 
-                            <mat-list-option [value]="selectedPlace?.formatted_address">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Search Location</mat-label>
+                                <input matInput placeholder="Search" aria-label="Search" #addressInputAutocomplete
+                                    [matAutocomplete]="auto" [(ngModel)]="addressSearch"
+                                    [ngModelOptions]="{standalone: true}" (ngModelChange)="getLocationPredictions()">
 
-                                <span>
-                                    <span class="material-icons">
-                                        business
-                                    </span> {{selectedPlace?.formatted_address}}
-                                </span>
-                            </mat-list-option>
-                        </ng-container>
-                        <ng-container *ngIf="selectedPlace?.international_phone_number">
+                            </mat-form-field>
 
-                            <mat-list-option [value]="selectedPlace?.international_phone_number">
 
-                                <span>
-                                    <span class="material-icons">
-                                        call
-                                    </span> {{selectedPlace?.international_phone_number}}
-                                </span>
-                            </mat-list-option>
-                        </ng-container>
-                        <ng-container *ngIf="selectedPlace?.website">
 
-                            <mat-list-option [value]="selectedPlace?.website">
-                                <span>
-                                    <span class="material-icons">
-                                        language
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                                (optionSelected)="placeSelected($event)">
+                                <ng-container>
+                                    <mat-option *ngFor="let state of placeOptions | async" [value]="state"
+                                        (mouseenter)="onHover(state)">
+                                        <span class="material-icons">
+                                            location_on
+                                        </span>
+                                        <span style="padding-left: 10px;">{{state.description}}</span>
+                                    </mat-option>
+                                </ng-container>
+                            </mat-autocomplete>
+
+                        </div>
+
+                        <div style="margin-top:30px;padding: 16px 10px 16px;">
+                            <div>
+                                <h1 style="margin: 0;"> <span>{{selectedPlace?.name}}</span> </h1>
+                                <h4 style="margin: 0;">
+                                    <span>{{selectedPlace?.formatted_address}}</span>
+                                </h4>
+                                <div id="rating" *ngIf="selectedPlace?.rating && selectedPlace?.user_ratings_total">
+                                    <span>Rating: ({{selectedPlace?.user_ratings_total}}) </span>
+                                    <span *ngFor='let in of counter(selectedPlace?.rating) ;let i = index'
+                                        class="material-icons" style="color: #ffb100;">
+                                        star
                                     </span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div style="margin-top:30px;padding: 16px 10px 16px;">
+                            <div>
+                                <h2 style="margin: 0;"> <span>Photos</span> </h2>
+                            </div>
+                        </div>
+                        <div *ngIf="selectedLocationUrls?.length">
+                            <mat-carousel timings="250ms ease-in" [autoplay]="true" interval="5000" color="accent"
+                                [maintainAspectRatio]="true" [proportion]="60" maxWidth="auto" slides="5" [loop]="true"
+                                [hideArrows]="false" [hideIndicators]="false" [useKeyboard]="true"
+                                [useMouseWheel]="false" orientation="ltr">
+                                <mat-carousel-slide #matCarouselSlide
+                                    *ngFor="let slide of selectedLocationUrls; let i = index" [image]="slide"
+                                    overlayColor="#00000040" [hideOverlay]="false"></mat-carousel-slide>
+                            </mat-carousel>
+                        </div>
+                        <hr />
+                        <div *ngIf="selectedPlace">
+                            <mat-selection-list [multiple]="false">
+                                <ng-container *ngIf="selectedPlace?.formatted_address">
 
-                                    {{selectedPlace?.website}}
-                                </span>
-                            </mat-list-option>
-                        </ng-container>
-                    </mat-selection-list>
-                </div>
+                                    <mat-list-option [value]="selectedPlace?.formatted_address">
 
-            </div>
+                                        <span>
+                                            <span class="material-icons">
+                                                business
+                                            </span> {{selectedPlace?.formatted_address}}
+                                        </span>
+                                    </mat-list-option>
+                                </ng-container>
+                                <ng-container *ngIf="selectedPlace?.international_phone_number">
+
+                                    <mat-list-option [value]="selectedPlace?.international_phone_number">
+
+                                        <span>
+                                            <span class="material-icons">
+                                                call
+                                            </span> {{selectedPlace?.international_phone_number}}
+                                        </span>
+                                    </mat-list-option>
+                                </ng-container>
+                                <ng-container *ngIf="selectedPlace?.website">
+
+                                    <mat-list-option [value]="selectedPlace?.website">
+                                        <span>
+                                            <span class="material-icons">
+                                                language
+                                            </span>
+
+                                            {{selectedPlace?.website}}
+                                        </span>
+                                    </mat-list-option>
+                                </ng-container>
+                            </mat-selection-list>
+                        </div>
+
+                    </div>
+                </mat-tab>
+                <mat-tab label="Search-Nearby">
+                    <div class="section-hero-header-image">
+                        <div class="search-box" style="position: relative;">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Category</mat-label>
+                                <mat-select [(ngModel)]="nearByType" [ngModelOptions]="{standalone: true}"
+                                    (ngModelChange)="nearBySearch()">
+
+                                    <mat-option *ngFor="let place of getCategories()" [value]="place">
+                                        {{place}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </div>
+
+
+                        <mat-selection-list #locations [multiple]="false">
+                            <ng-container *ngIf="nearByResults?.length">
+                                <mat-list-option *ngFor="let result of nearByResults" [value]="result"
+                                    (click)="onSeletctNearBy(locations.selectedOptions.selected[0]?.value)">
+                                    <mat-icon mat-list-icon style="color: #607d8b;">near_me</mat-icon>
+                                    <div mat-line style="color: #4444a5;"> <strong> {{result?.name}}</strong></div>
+                                    <div mat-line style="color:gray"> {{result?.vicinity}} </div>
+                                    <div id="rating" *ngIf="result?.rating && result?.user_ratings_total">
+
+                                        <span *ngFor='let in of counter(result?.rating) ;let i = index'
+                                            class="material-icons" style="color: #ffb100; font-size: small;">
+                                            star
+                                        </span>
+                                    </div>
+                                </mat-list-option>
+                            </ng-container>
+                        </mat-selection-list>
+                    </div>
+                </mat-tab>
+
+            </mat-tab-group>
+
             <br>
         </form>
     </mat-drawer>
