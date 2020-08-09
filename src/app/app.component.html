@@ -1,0 +1,13 @@
+<mat-toolbar color="primary" class="mat-elevation-z6">
+  <a href="javasccript:void(0);">
+    <img src="https://d33wubrfki0l68.cloudfront.net/fcbb879fa1362bf24ceeca586f9d3e6e71f87a89/4b5e3/img/logocolor.svg"
+      alt="" title="" style="padding: 0;
+      margin: 0;
+      max-height: 43px;">
+  </a>
+  <span>Maps</span>
+</mat-toolbar>
+
+<div class="content" role="main">
+  <AutocompleteComponent (setAddress)="getAddress($event)" adressType="geocode"></AutocompleteComponent>
+</div>
