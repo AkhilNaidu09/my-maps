@@ -1,0 +1,17 @@
+<mat-selection-list #locations [multiple]="false">
+    <ng-container *ngIf="nearByResults?.length">
+        <mat-list-option *ngFor="let result of nearByResults" [value]="result"
+            (click)="onSeletctNearBy(locations.selectedOptions.selected[0]?.value)">
+            <mat-icon mat-list-icon style="color: #607d8b;">near_me</mat-icon>
+            <div mat-line style="color: #4444a5;"> <strong> {{result?.name}}</strong></div>
+            <div mat-line style="color:gray"> {{result?.vicinity}} </div>
+            <div id="rating" *ngIf="result?.rating && result?.user_ratings_total">
+
+                <span *ngFor='let in of counter(result?.rating) ;let i = index' class="material-icons"
+                    style="color: #ffb100; font-size: small;">
+                    star
+                </span>
+            </div>
+        </mat-list-option>
+    </ng-container>
+</mat-selection-list>

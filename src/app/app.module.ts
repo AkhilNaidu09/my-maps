@@ -21,10 +21,18 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatButtonModule} from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { LocationSearchComponent } from './google-places/location-search/location-search.component';
+import { NearbySearchBoxComponent } from './google-places/nearby-search-box/nearby-search-box.component';
+import { NearbyResultsComponent } from './google-places/nearby-results/nearby-results.component';
+import { SelectedLocationViewComponent } from './google-places/selected-location-view/selected-location-view.component';
 @NgModule({
   declarations: [
     AppComponent,
-    GooglePlacesComponent
+    GooglePlacesComponent,
+    LocationSearchComponent,
+    NearbySearchBoxComponent,
+    NearbyResultsComponent,
+    SelectedLocationViewComponent
   ],
   imports: [
     BrowserModule,

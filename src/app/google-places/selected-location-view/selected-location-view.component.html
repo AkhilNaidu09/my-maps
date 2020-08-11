@@ -1,0 +1,68 @@
+<div style="margin-top:30px;padding: 16px 10px 16px;">
+    <div>
+        <h1 style="margin: 0;"> <span>{{selectedPlace?.name}}</span> </h1>
+        <h4 style="margin: 0;">
+            <span>{{selectedPlace?.formatted_address}}</span>
+        </h4>
+        <div id="rating" *ngIf="selectedPlace?.rating && selectedPlace?.user_ratings_total">
+            <span>Rating: ({{selectedPlace?.user_ratings_total}}) </span>
+            <span *ngFor='let in of counter(selectedPlace?.rating) ;let i = index' class="material-icons"
+                style="color: #ffb100;">
+                star
+            </span>
+        </div>
+    </div>
+</div>
+<hr />
+<div style="margin-top:30px;padding: 16px 10px 16px;">
+    <div>
+        <h2 style="margin: 0;"> <span>Photos</span> </h2>
+    </div>
+</div>
+<div *ngIf="selectedLocationUrls?.length">
+    <mat-carousel timings="250ms ease-in" [autoplay]="true" interval="5000" color="accent" [maintainAspectRatio]="true"
+        [proportion]="60" maxWidth="auto" slides="5" [loop]="true" [hideArrows]="false" [hideIndicators]="false"
+        [useKeyboard]="true" [useMouseWheel]="false" orientation="ltr">
+        <mat-carousel-slide #matCarouselSlide *ngFor="let slide of selectedLocationUrls; let i = index" [image]="slide"
+            overlayColor="#00000040" [hideOverlay]="false"></mat-carousel-slide>
+    </mat-carousel>
+</div>
+<hr />
+<div *ngIf="selectedPlace">
+    <mat-selection-list [multiple]="false">
+        <ng-container *ngIf="selectedPlace?.formatted_address">
+
+            <mat-list-option [value]="selectedPlace?.formatted_address">
+
+                <span>
+                    <span class="material-icons">
+                        business
+                    </span> {{selectedPlace?.formatted_address}}
+                </span>
+            </mat-list-option>
+        </ng-container>
+        <ng-container *ngIf="selectedPlace?.international_phone_number">
+
+            <mat-list-option [value]="selectedPlace?.international_phone_number">
+
+                <span>
+                    <span class="material-icons">
+                        call
+                    </span> {{selectedPlace?.international_phone_number}}
+                </span>
+            </mat-list-option>
+        </ng-container>
+        <ng-container *ngIf="selectedPlace?.website">
+
+            <mat-list-option [value]="selectedPlace?.website">
+                <span>
+                    <span class="material-icons">
+                        language
+                    </span>
+
+                    {{selectedPlace?.website}}
+                </span>
+            </mat-list-option>
+        </ng-container>
+    </mat-selection-list>
+</div>

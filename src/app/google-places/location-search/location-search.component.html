@@ -1,0 +1,19 @@
+<mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Search Location</mat-label>
+    <input matInput placeholder="Search" aria-label="Search" #addressInputAutocomplete [matAutocomplete]="auto"
+        [(ngModel)]="addressSearch" [ngModelOptions]="{standalone: true}" (ngModelChange)="getLocationPredictions()">
+
+</mat-form-field>
+
+
+
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="placeSelected($event)">
+    <ng-container>
+        <mat-option *ngFor="let state of placeOptions | async" [value]="state" (mouseenter)="onHover(state)">
+            <span class="material-icons">
+                location_on
+            </span>
+            <span style="padding-left: 10px;">{{state.description}}</span>
+        </mat-option>
+    </ng-container>
+</mat-autocomplete>

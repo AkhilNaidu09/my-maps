@@ -1,7 +1,6 @@
 /// <reference types="@types/googlemaps" />
 
-import { Component, ViewChild, OnInit, AfterViewInit, NgZone, ElementRef } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'AutocompleteComponent',
@@ -9,24 +8,13 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./google-places.component.scss']
 })
 export class GooglePlacesComponent implements OnInit, AfterViewInit {
-  public placeOptions: BehaviorSubject<google.maps.places.AutocompletePrediction[]>;
-  private autocompleteService: google.maps.places.AutocompleteService;
-  public addressSearch: string = '';
-  public nearByType: string = '';
-  lat: any;
-  lng: any;
 
   selectedPlace: any = null;
   selectedLocationUrls: any[] = [];
   nearByResults: any;
   selectedTab: number = 0;
 
-  constructor(private zone: NgZone) {
-    this.placeOptions = new BehaviorSubject([]);
-  }
-
-  public displayFn(option: google.maps.places.AutocompletePrediction) {
-    return option ? option.description : '';
+  constructor() {
   }
 
   ngOnInit() {
@@ -43,44 +31,9 @@ export class GooglePlacesComponent implements OnInit, AfterViewInit {
     this.initialize(data.place_id);
   }
 
-  onSeletctNearBy(data) {
+  onSelectNearBy(data) {
     this.initialize(data.place_id);
     this.selectedTab = 0;
-  }
-
-  /**
-   * Retrieves search predections (a custom autocomplete)
-   *
-   * @memberof GooglePlacesComponent
-   */
-  getLocationPredictions() {
-    if (this.addressSearch.length) {
-      this.autocompleteService.getPlacePredictions({ input: this.addressSearch }, (results) => {
-        this.zone.run(() => { this.placeOptions.next(results); });
-      });
-    } else {
-      this.placeOptions.next([]);
-    }
-  }
-
-  nearBySearch() {
-    const request = {
-      location: new google.maps.LatLng(this.lat, this.lng),
-      radius: 5000,
-      type: this.nearByType ? this.nearByType : 'restaurant'
-    };
-
-    const places = document.getElementById("map_canvas") as HTMLDivElement;
-    const service = new google.maps.places.PlacesService(places);
-    var _this = this;
-    service.nearbySearch(request, function (place, status) {
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        _this.zone.run(() => { _this.nearByResults = place; });
-      } else {
-        _this.zone.run(() => { _this.nearByResults = []; });
-      }
-    });
-
   }
 
   /**
@@ -100,19 +53,14 @@ export class GooglePlacesComponent implements OnInit, AfterViewInit {
    * @memberof GooglePlacesComponent
    */
   ngAfterViewInit() {
-    this.autocompleteService = new google.maps.places.AutocompleteService();
-
-    // poping-up allow location to get current location of user, currently not using anywhere **TODO
-    if (navigator) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        this.lng = +pos.coords.longitude;
-        this.lat = +pos.coords.latitude;
-      });
-    }
 
     // Initiating maps with a static placeId, we can do this dynamically as well by poping-up allow location in broswer side.
     this.initialize('ChIJdd_ytSbL4BQRWDUgd6Myndo');
 
+  }
+
+  setNearbyResults(event) {
+    this.nearByResults = event;
   }
 
   /**
@@ -192,20 +140,4 @@ export class GooglePlacesComponent implements OnInit, AfterViewInit {
     });
 
   }
-
-  /**
-   * Following method will generates an array to loop and bind the rating in DOM (all the decimal rating will be rounded here)
-   *
-   * @param {number} i
-   * @returns
-   * @memberof GooglePlacesComponent
-   */
-  counter(i: number) {
-    return new Array(Math.round(i));
-  }
-
-  getCategories(): string[] {
-    return ["accounting", "airport", "amusement_park", "aquarium", "art_gallery", "atm", "bakery", "bank", "bar", "beauty_salon", "bicycle_store", "book_store", "bowling_alley", "bus_station", "cafe", "campground", "car_dealer", "car_rental", "car_repair", "car_wash", "casino", "cemetery", "church", "city_hall", "clothing_store", "convenience_store", "courthouse", "dentist", "department_store", "doctor", "drugstore", "electrician", "electronics_store", "embassy", "fire_station", "florist", "funeral_home", "furniture_store", "gas_station", "gym", "hair_care", "hardware_store", "hindu_temple", "home_goods_store", "hospital", "insurance_agency", "jewelry_store", "laundry", "lawyer", "library", "light_rail_station", "liquor_store", "local_government_office", "locksmith", "lodging", "meal_delivery", "meal_takeaway", "mosque", "movie_rental", "movie_theater", "moving_company", "museum", "night_club", "painter", "park", "parking", "pet_store", "pharmacy", "physiotherapist", "plumber", "police", "post_office", "primary_school", "real_estate_agency", "restaurant", "roofing_contractor", "rv_park", "school", "secondary_school", "shoe_store", "shopping_mall", "spa", "stadium", "storage", "store", "subway_station", "supermarket", "synagogue", "taxi_stand", "tourist_attraction", "train_station", "transit_station", "travel_agency", "university", "veterinary_care", "zoo"];
-  }
-
 }
