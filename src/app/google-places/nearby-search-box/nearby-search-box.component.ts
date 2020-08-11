@@ -18,7 +18,37 @@ export class NearbySearchBoxComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Following method is responsible for fetching near by results using location and category type
+   *
+   * @memberof NearbySearchBoxComponent
+   */
   nearBySearch() {
+    if (this.lat && this.lng) {
+      this.getNearByResult();
+    } else {
+      alert('Please allow location for better search results');
+      if (navigator) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          this.lng = +pos.coords.longitude;
+          this.lat = +pos.coords.latitude;
+        });
+      }
+    }
+
+  }
+
+  ngAfterViewInit() {
+    // poping-up allow location to get current location of user, currently not using anywhere **TODO
+    if (navigator) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        this.lng = +pos.coords.longitude;
+        this.lat = +pos.coords.latitude;
+      });
+    }
+  }
+
+  getNearByResult() {
     const request = {
       location: new google.maps.LatLng(this.lat, this.lng),
       radius: 5000,
@@ -40,17 +70,6 @@ export class NearbySearchBoxComponent implements OnInit {
         });
       }
     });
-
-  }
-
-  ngAfterViewInit() {
-    // poping-up allow location to get current location of user, currently not using anywhere **TODO
-    if (navigator) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        this.lng = +pos.coords.longitude;
-        this.lat = +pos.coords.latitude;
-      });
-    }
   }
 
   getCategories(): string[] {

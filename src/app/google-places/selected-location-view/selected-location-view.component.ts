@@ -19,7 +19,7 @@ export class SelectedLocationViewComponent implements OnInit {
    *
    * @param {number} i
    * @returns
-   * @memberof GooglePlacesComponent
+   * @memberof SelectedLocationViewComponent
    */
   counter(i: number) {
     return new Array(Math.round(i));
