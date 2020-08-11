@@ -50,6 +50,8 @@ export class LocationSearchComponent implements OnInit {
 
   ngAfterViewInit() {
     this.autocompleteService = new google.maps.places.AutocompleteService();
-    this.addressInputAutocomplete.nativeElement.focus();
+    setTimeout(() => {
+      this.addressInputAutocomplete.nativeElement.focus();
+    }, 0)
   }
 }
