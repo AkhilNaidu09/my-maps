@@ -2,7 +2,9 @@
     <mat-label>Search Location</mat-label>
     <input matInput placeholder="Search" aria-label="Search" #addressInputAutocomplete [matAutocomplete]="auto"
         [(ngModel)]="addressSearch" [ngModelOptions]="{standalone: true}" (ngModelChange)="getLocationPredictions()">
-
+    <button mat-button *ngIf="addressSearch" matSuffix mat-icon-button aria-label="Clear" (click)="addressSearch=''">
+        <mat-icon>close</mat-icon>
+    </button>
 </mat-form-field>
 
 
