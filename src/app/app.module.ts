@@ -12,19 +12,21 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
-import {MatListModule} from '@angular/material/list';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatSelectModule} from '@angular/material/select';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatButtonModule} from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { LocationSearchComponent } from './google-places/location-search/location-search.component';
 import { NearbySearchBoxComponent } from './google-places/nearby-search-box/nearby-search-box.component';
 import { NearbyResultsComponent } from './google-places/nearby-results/nearby-results.component';
 import { SelectedLocationViewComponent } from './google-places/selected-location-view/selected-location-view.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {LayoutModule} from '@angular/cdk/layout';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,8 +56,10 @@ import { SelectedLocationViewComponent } from './google-places/selected-location
     MatTabsModule,
     MatButtonModule,
     MatIconModule,
-    MatGridListModule
-   
+    MatGridListModule,
+    FlexLayoutModule,
+    LayoutModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

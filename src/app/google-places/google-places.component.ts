@@ -1,6 +1,8 @@
 /// <reference types="@types/googlemaps" />
 
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, HostListener } from '@angular/core';
+import { MatDrawer } from '@angular/material/sidenav';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'AutocompleteComponent',
@@ -8,13 +10,16 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
   styleUrls: ['./google-places.component.scss']
 })
 export class GooglePlacesComponent implements OnInit, AfterViewInit {
-
+  @ViewChild(MatDrawer) public drawer: MatDrawer
   selectedPlace: any = null;
   selectedLocationUrls: any[] = [];
   nearByResults: any;
   selectedTab: number = 0;
+  screenHeight: number;
+  screenWidth: number;
 
-  constructor() {
+  constructor(private breakpointObserver: BreakpointObserver) {
+    this.onResize();
   }
 
   ngOnInit() {
@@ -43,6 +48,10 @@ export class GooglePlacesComponent implements OnInit, AfterViewInit {
    * @memberof GooglePlacesComponent
    */
   public placeSelected(place) {
+    const isSmallScreen = this.breakpointObserver.isMatched('(max-width: 599px)');
+    if (isSmallScreen) {
+      this.drawer.toggle()
+    }
     this.selectedPlace = place?.option?.value;
     this.initialize(this.selectedPlace.place_id);
   }
@@ -61,6 +70,16 @@ export class GooglePlacesComponent implements OnInit, AfterViewInit {
 
   setNearbyResults(event) {
     this.nearByResults = event;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+    const isSmallScreen = this.breakpointObserver.isMatched('(max-width: 599px)')
+    if (!isSmallScreen) {
+      this?.drawer?.open();
+    }
   }
 
   /**
